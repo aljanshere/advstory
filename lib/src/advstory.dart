@@ -30,6 +30,7 @@ class AdvStory extends StatefulWidget {
     this.buildStoryOnTrayScroll = true,
     this.preloadStory = true,
     this.preloadContent = true,
+    this.onClose,
     this.style = const AdvStoryStyle(),
     Key? key,
   })  : storyController = controller,
@@ -47,6 +48,7 @@ class AdvStory extends StatefulWidget {
     required this.storyBuilder,
     this.preloadContent = true,
     this.preloadStory = true,
+    this.onClose,
     this.style = const AdvStoryStyle(),
     required AdvStoryPlayerController controller,
   })  : hasTrays = false,
@@ -54,6 +56,8 @@ class AdvStory extends StatefulWidget {
         trayBuilder = null,
         storyController = controller,
         super(key: key);
+
+  final VoidCallback? onClose;
 
   /// Determines if should build [TrayView] or [StoryView].
   final bool hasTrays;
@@ -161,8 +165,7 @@ class _AdvStoryState extends State<AdvStory> with TickerProviderStateMixin {
     );
     _indicatorController = AnimationController(vsync: this);
 
-    _controller = (widget.storyController ?? AdvStoryController())
-        as AdvStoryControllerImpl;
+    _controller = (widget.storyController ?? AdvStoryController()) as AdvStoryControllerImpl;
     _controller
       ..storyCount = widget.storyCount
       ..setAnimationControllers(
@@ -220,6 +223,7 @@ class _AdvStoryState extends State<AdvStory> with TickerProviderStateMixin {
           style: widget.style,
           preloadStory: widget.preloadStory,
           preloadContent: widget.preloadContent,
+          onClose: widget.onClose,
           child: const SizedBox.expand(child: StoryView()),
         );
       },

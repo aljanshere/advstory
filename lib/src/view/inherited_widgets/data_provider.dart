@@ -17,9 +17,12 @@ class DataProvider extends InheritedWidget {
     required this.buildHelper,
     required this.preloadContent,
     required this.preloadStory,
+    this.onClose,
     this.hasTrays = true,
     this.firstContentPreperation,
   }) : super(key: key, child: child);
+
+  final VoidCallback? onClose;
 
   /// Used to determine if AdvStory widget created for only player or not.
   final bool hasTrays;
@@ -47,8 +50,7 @@ class DataProvider extends InheritedWidget {
   /// First content's markReady method calls this method to allow AdvStory to
   /// show the story view.
   void markFirstReady() {
-    if (firstContentPreperation != null &&
-        !firstContentPreperation!.isCompleted) {
+    if (firstContentPreperation != null && !firstContentPreperation!.isCompleted) {
       firstContentPreperation!.complete();
     }
   }

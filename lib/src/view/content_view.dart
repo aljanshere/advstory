@@ -19,6 +19,7 @@ class ContentView extends StatefulWidget {
   const ContentView({
     required this.storyIndex,
     required this.story,
+    required this.onClose,
     Key? key,
   }) : super(key: key);
 
@@ -27,6 +28,8 @@ class ContentView extends StatefulWidget {
 
   /// Story that is being displayed in this view.
   final Story story;
+
+  final VoidCallback? onClose;
 
   @override
   ContentViewState createState() => ContentViewState();
@@ -130,14 +133,18 @@ class ContentViewState extends State<ContentView> {
       return;
     }
 
-    final interception = _provider!.controller.interceptor?.call(
-      StoryEvent.close,
-    );
-
-    if (interception != null) {
-      interception();
+    if (widget.onClose != null) {
+      widget.onClose?.call();
     } else {
-      !_provider!.hasTrays ? _provider!.controller.positionNotifier.shouldShowView.value = false : Navigator.of(context).pop();
+      final interception = _provider!.controller.interceptor?.call(
+        StoryEvent.close,
+      );
+
+      if (interception != null) {
+        interception();
+      } else {
+        !_provider!.hasTrays ? _provider!.controller.positionNotifier.shouldShowView.value = false : Navigator.of(context).pop();
+      }
     }
   }
 
