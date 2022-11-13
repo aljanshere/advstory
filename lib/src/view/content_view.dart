@@ -44,16 +44,12 @@ class ContentViewState extends State<ContentView> {
   @override
   void didChangeDependencies() {
     _provider ??= DataProvider.of(context)!;
-    final initialPage =
-        _provider!.positionNotifier.initialPosition.story == widget.storyIndex
-            ? _provider!.positionNotifier.content
-            : 0;
+    final initialPage = _provider!.positionNotifier.initialPosition.story == widget.storyIndex ? _provider!.positionNotifier.content : 0;
     _pageController ??= ExtendedPageController(
       itemCount: widget.story.contentCount,
       initialPage: initialPage,
     );
-    _provider!.controller
-        .setContentController(_pageController!, widget.storyIndex);
+    _provider!.controller.setContentController(_pageController!, widget.storyIndex);
 
     super.didChangeDependencies();
   }
@@ -141,9 +137,7 @@ class ContentViewState extends State<ContentView> {
     if (interception != null) {
       interception();
     } else {
-      !_provider!.hasTrays
-          ? _provider!.controller.positionNotifier.shouldShowView.value = false
-          : Navigator.of(context).pop();
+      !_provider!.hasTrays ? _provider!.controller.positionNotifier.shouldShowView.value = false : Navigator.of(context).pop();
     }
   }
 
@@ -152,6 +146,7 @@ class ContentViewState extends State<ContentView> {
     return Scaffold(
       key: _key,
       resizeToAvoidBottomInset: false,
+      backgroundColor: Colors.transparent,
       body: Stack(
         children: [
           GestureDetector(
@@ -199,11 +194,9 @@ class ContentViewState extends State<ContentView> {
             builder: (context, value, child) {
               return value == widget.storyIndex
                   ? StoryIndicator(
-                      activeIndicatorIndex: _pageController!.page?.toInt() ??
-                          _pageController!.initialPage.toInt(),
+                      activeIndicatorIndex: _pageController!.page?.toInt() ?? _pageController!.initialPage.toInt(),
                       count: widget.story.contentCount,
-                      controller:
-                          _provider!.controller.flowManager.indicatorController,
+                      controller: _provider!.controller.flowManager.indicatorController,
                       style: _provider!.style.indicatorStyle,
                     )
                   : StoryIndicator.placeholder(
